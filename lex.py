@@ -3,19 +3,25 @@ from language_processor import tokeniser as lp
 
 def main():
     # load undesirable tokens
-    undesired_token_list = df.load_undesired_tokens()
+    undesired_token_list = df.load_undesired_tokens_df()
 
-    # parse raw input
+    # parse raw input, returns a list of strings
+    # print statement prints new line characters, does this need removed?
     parse_raw_input = df.parse_raw_input()
 
-    # load language processor object
-    #language_doc = lp.construct_language_doc(parse_raw_input)
+    # tokenise input
+    input_token_list = lp.tokenise_text(parse_raw_input) 
 
-    # create token list
-    #token_list = [token.text for token in language_doc]
+    for token_line in input_token_list:
+        for item in token_line:
+            if undesired_token_list['word'].str.contains(item):
+                print(f"found undesired token {item}" )
+        print(token_line)
 
-    # load weights
-    weights = df.load_undesired_token_weights(undesired_token_list)
+    print(undesired_token_list)
+
+    profanity_list = df.load_profanity_data_frame()
+    #print(profanity_list)
 
 
 if __name__ == "__main__":

@@ -1,43 +1,42 @@
 import json
 import csv
+import pandas as pd
 
 
-# load tokens and return new list with the word as the key
-def load_undesired_tokens():
-    print("Loading Undesired Tokens...")
+# load undesired tokens and create a data frame
+def load_undesired_tokens_df():
     undesired_tokens_f = open('io/unsuitable.json')
     undesired_token_list = json.load(undesired_tokens_f)['words']
+    undesired_words = [word['word'] for word in undesired_token_list]
+    # convert words to lower case
+    undesired_words = [word.lower() for word in undesired_words]
+    udesired_categories = [word['category'] for word in undesired_token_list]
+    undesired_weights = [word['weight'] for word in undesired_token_list]
+    data = {
+        'word': undesired_words,
+        'category': udesired_categories,
+        'weight': undesired_weights
+    }
 
-    return undesired_token_list
+    df = pd.DataFrame(data)
 
-
-def create_undesired_token_index(token_list):
-    print("undesired token index..")
-
-    undesired_tokens_indexed = {token_list['word']: token for token in token_list}
-    return undesired_tokens_indexed
-
-
-def load_undesired_token_weights(token_list):
-    print("Load undesired token weights...")
-
-    token_weights = []
-    for token in token_list:
-        token_weights.append({
-            "word": token['word'],
-            "weight": token['weight']
-        })
-
-    return token_weights
-
+    return df
 
 # format raw inputs
 def parse_raw_input():
+    data = []
     with open('io/input.txt') as f:
         lines = f.readlines()
-        data = [line.replace(' ', '') for line in lines]
+        data = [line for line in lines if line.strip()]
 
-    return data 
+    return data
+
+
+def load_profanity_data_frame():
+    print("Loading profanity data frame")
+    df = pd.read_csv('io/profanity.csv')
+
+    return df
 
 
 def load_profanity_list():
@@ -49,6 +48,3 @@ def load_profanity_list():
                 profanity_set.add(word.lower())
 
     return profanity_set
-
-
-

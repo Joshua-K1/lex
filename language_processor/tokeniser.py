@@ -1,17 +1,9 @@
-import re
-import spacy
+import nltk
 
-def create_spacy_tokeniser():
-    language_processor = spacy.load("en_core_web_sm")
-    
-    return language_processor
+# does this need to be loaded every time?
+nltk.download('punkt')
 
+def tokenise_text(data):
+    tokenised_data = [nltk.word_tokenize(token) for token in data]
 
-def construct_language_doc(data):
-    lp = create_spacy_tokeniser()
-    language_doc = lp(data)
-
-    return language_doc
-
-
-
+    return tokenised_data
