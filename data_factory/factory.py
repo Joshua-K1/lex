@@ -10,22 +10,30 @@ def load_data():
     return data
 
 
+# Extract keys and data from json object
 def load_keys(data):
+    extracted_values = []
+    # Recursion checks if the object returned is a dictionary or a list
     for key in data.keys():
-        #print(f"Key Name: {key}" + f" Key Value: {data[key]}")
-
         if isinstance(data[key], dict):
             load_keys(data[key])
-
         if isinstance(data[key], list):
             for item in data[key]:
                 if isinstance(item, list):
                     load_keys(item)
-
                 if isinstance(item, dict):
                     load_keys(item)
-
                 else:
-                    print(f"{item}")
+                    extracted_values.append({"Key": key, "Value": item})
         else:
-            print(data[key])
+            extracted_values.append({"Key": key, "Value": data[key]})
+
+    return extracted_values
+
+# Create dataframe
+def create_dataframe(extracted_values):
+    keys = [item["Key"] for item in extracted_values]
+    values = [item["Value"] for item in extracted_values]
+    df = pd.DataFrame({"Key": keys, "Value": values})
+
+    return df
