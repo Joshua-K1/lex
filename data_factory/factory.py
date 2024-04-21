@@ -1,6 +1,7 @@
 import json
 import csv
 import pandas as pd
+import numpy as np
 
 def load_data():
     print("Load Data...")
@@ -34,6 +35,6 @@ def load_keys(data):
 def create_dataframe(extracted_values):
     keys = [item["Key"] for item in extracted_values]
     values = [item["Value"] for item in extracted_values]
-    df = pd.DataFrame({"Key": keys, "Value": values})
+    df = pd.DataFrame({"Key": keys, "Value": values, "Error": np.zeros(len(keys))})
 
     return df
