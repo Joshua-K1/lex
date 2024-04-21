@@ -1,6 +1,4 @@
 from data_factory import factory
-from language_processor import tokeniser as lp
-from language_processor import profanity_filter
 from better_profanity import profanity
 
 def main():
@@ -13,12 +11,16 @@ def main():
     # extract keys and values from json data
     extracted_values = factory.load_keys(data)
 
-    # create dataframe
+    # get id
+    id = get_id(extracted_values)
+    print(f"ID of the submission: {id}")
+
     df = factory.create_dataframe(extracted_values)
 
+    # check each value for profanity
     keys_with_profanity = check_profanity(extracted_values)
 
-    if keys_with_profanity is not None:
+    if len(keys_with_profanity) > 0:
         for key in keys_with_profanity:
             print(key)
     else:
@@ -33,9 +35,16 @@ def check_profanity(input):
         if isinstance(value['Value'], str):
             if profanity.contains_profanity(value['Value']):
                 print(f"{value['Key']} contains profanity")
-
+                keys_with_profanity.append({"Key": value['Key'], "Value": value['Value']})
     
     return keys_with_profanity
+
+
+def get_id(input):
+    for item in input:
+        if item['Key'] == 'id':
+            return item['Value']
+
 
 
 if __name__ == "__main__":
