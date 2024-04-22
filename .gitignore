@@ -1,2 +1,4 @@
 .env
 __pycache__
+io/inputs.txt
+io/*
