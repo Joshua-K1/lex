@@ -1,11 +1,14 @@
 from better_profanity import profanity
+import logging
+
+logger = logging.getLogger()
 
 def load_censor():
-    print("Loading censor words..")
+    logger.info("Loading censor words")
     return profanity.load_censor_words()
 
 def check_profanity(text):
-    print("Check profanity..")
+    logger.info("Checking for profanity")
     
     # returns True if profanity is found
     return profanity.contains_profanity(text)

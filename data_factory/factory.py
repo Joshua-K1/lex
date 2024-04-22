@@ -1,10 +1,12 @@
 import json
-import csv
 import pandas as pd
 import numpy as np
+import logging
+
+logger = logging.getLogger()
 
 def load_data():
-    print("Load Data...")
+    logger.info("Loading JSON data")
     with open('io/test_input.json') as f:
         data = json.load(f)
     
@@ -13,6 +15,7 @@ def load_data():
 
 # Extract keys and data from json object
 def load_keys(data):
+    logger.info("Extracting keys and values from JSON data")
     extracted_values = []
     # Recursion checks if the object returned is a dictionary or a list
     for key in data.keys():
