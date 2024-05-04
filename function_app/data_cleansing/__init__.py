@@ -17,22 +17,22 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     # extract keys and values from json data
     extracted_values = factory.load_keys(data)
 
-    # get if of submission
+    # get id of submission
     submission_id = get_id(extracted_values)
     logger.info(f"Extracted values for submisson {submission_id}")
+
     df = factory.create_dataframe(extracted_values)
 
     # check each value for profanity
     keys_with_profanity = check_profanity(extracted_values)
 
     if len(keys_with_profanity) > 0:
-        for key in keys_with_profanity:
-            print(key)
+        logger.info(f"Submission ID: {submission_id} | Status: Contains profanity | Moving to quarantine data store")
     else:
-        print("No keys with profanity found...")
+        logger.info(f"Submission ID: {submission_id} | Status: Clean | Moving to sanitised data store")
 
     return func.HttpResponse(
-        "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
+        "Function executed successfully. Check logs for more information.",
         status_code=200
     )
 
