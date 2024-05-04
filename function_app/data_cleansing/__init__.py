@@ -1,4 +1,5 @@
-from data_factory import factory
+from .data_factory import factory
+import azure.functions as func
 from better_profanity import profanity
 import logging
 
@@ -6,7 +7,7 @@ logging.basicConfig(filename="io/logfile.log", format='%(asctime)s - %(message)s
 logger = logging.getLogger()
 
 
-def main():
+def main(req: func.HttpRequest) -> func.HttpResponse:
     logger.setLevel(logging.DEBUG)
     logger.info("Starting function run...")
 
@@ -29,6 +30,11 @@ def main():
             print(key)
     else:
         print("No keys with profanity found...")
+
+    return func.HttpResponse(
+        "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
+        status_code=200
+    )
 
 
 # check keys for profanity 
