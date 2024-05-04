@@ -3,7 +3,6 @@ import azure.functions as func
 from better_profanity import profanity
 import logging
 
-logging.basicConfig(filename="io/logfile.log", format='%(asctime)s - %(message)s', filemode='a')
 logger = logging.getLogger()
 
 
